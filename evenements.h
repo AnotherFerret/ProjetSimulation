@@ -33,6 +33,8 @@ double tableau_proba[109];			//f° repartition
 int anneau[taille_anneau];			//l'anneau
 
 int longueur_manchon;				//longueur manchon pour cond arrêt
+double haut_manchon;					
+double bas_manchon;					
 int epsilon;						//hauteur manchon pour cond arrêt
 
 //fonctions

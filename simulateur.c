@@ -1,5 +1,9 @@
 //main et simulateur, init simulation
 
+#define EPSILON 10e-6
+#define MANCHONMAXLENGTH 5000
+
+
 #include "evenements.h"
 #include "expo.h"
 
@@ -46,24 +50,44 @@ void anneau_affiche()
 	{
 		if(i == j * (taille_anneau/nombre_stations) && j < nombre_stations)
 		{
-			printf("[[%d] station = %d]", anneau[i], i);
+			//printf("[[%d] station = %d]", anneau[i], i);
 			j++;
 		}
 		else
 		{
-			printf("[%d]", anneau[i]);
+			//printf("[%d]", anneau[i]);
 		}
 		
 	}
-	printf("\nT = %d\n\n", T);
+	//printf("\nT = %d\n\n", T);
+}
+
+int condition_arret(double temps_attente_moyen)
+{
+	if (temps_attente_moyen < bas_manchon || temps_attente_moyen > haut_manchon)
+	{
+		printf("%d \n",longueur_manchon);
+		bas_manchon = temps_attente_moyen - EPSILON/2.0;
+		haut_manchon = temps_attente_moyen + EPSILON/2.0;
+		longueur_manchon = 0;
+	}
+	else
+	{
+		longueur_manchon++;
+	}
+	if (longueur_manchon == MANCHONMAXLENGTH)
+	{
+		return 1;
+	}
+	return 0;
 }
 
 
-
-void simulateur(FILE* f1)
+void simulateur(FILE* f1,FILE* f2)
 {
 	station s_tab[nombre_stations];
 	int i = 0;
+	int temps_simulation = 0;
 	
 	init_anneau();
 	init_tableau_proba();
@@ -73,10 +97,10 @@ void simulateur(FILE* f1)
 	for(i = 0;i < nombre_stations;i++)
 	{
 		s_tab[i] = init_station(i*(taille_anneau/nombre_stations));
-		printf("%d devenu station\n", i);
+		//printf("%d devenu station\n", i);
 	}
 		
-	for(int iteration = 10000; iteration > 0; iteration--)
+	for(int iteration = 20000000; iteration > 0; iteration--)
 	{
 		//tic d'horloge
 		T++;
@@ -123,25 +147,35 @@ void simulateur(FILE* f1)
 			}
 		}
 		anneau_affiche();
-		printf("UN TIC \n\n");
+		//printf("UN TIC \n\n");
+		//Temps d'attente moyen pour les stations 1 et 10
+		temps_simulation ++;
+		//fprintf(f1,"%d	%lf\n",temps_simulation,(double)(s_tab[1].temps_attente + s_tab[10].temps_attente )/temps_simulation);
+		//fprintf(f2,"%d	%d\n",temps_simulation,paquet_actif);
+		
+		
+		if (condition_arret((double)(s_tab[1].temps_attente + s_tab[10].temps_attente )/temps_simulation))
+		{
+			printf("Arret à l'itération : %d \n",temps_simulation);
+			iteration = 0;
+		}
+		
 	}
 }
 
 //manchons pour vérifier la stabilité du système
-int condition_arret(long double old, long double new)
-{
-	//todo
-	return 0;
-}
+
 
 
 int main(int argc, char **argv)
 {
 
-	FILE* f = fopen("simulation.data", "w");
+	FILE* f1 = fopen("simulation_temps_attente.data", "w");
+	FILE* f2 = fopen("simulation_paquets_actifs.data", "w");
 	srandom(getpid() + time(NULL));
-	simulateur(f);
-	fclose(f);
+	simulateur(f1,f2);
+	fclose(f1);
+	fclose(f2);
 
 	return 0;
 }

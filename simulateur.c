@@ -1,8 +1,5 @@
 //main et simulateur, init simulation
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <time.h>
+
 
 #include "evenements.h"
 #include "expo.h"
@@ -43,6 +40,24 @@ void anneau_tourne()
 	anneau[taille_anneau-1] = memo;
 }
 
+void anneau_affiche()
+{
+	int j = 0;
+	for(int i = 0; i < taille_anneau; i++)
+	{
+		if(i == j * (taille_anneau/nombre_stations))
+		{
+			printf("[[%d] station = %d]", anneau[i], i);
+			j++;
+		}
+		else
+		{
+			printf("[%d]", anneau[i]);
+		}
+		
+	}
+	printf("\nT = %d\n\n", T);
+}
 
 void simulateur(FILE* f1)
 {
@@ -51,15 +66,17 @@ void simulateur(FILE* f1)
 	
 	init_anneau();
 	
-	for(int iteration = 150000; iteration > 0; iteration--)
+
+	//initialise les stations à intervalles réguliers
+	for(i = 0;i < nombre_stations;i++)
 	{
-		//initialise les stations à intervalles réguliers
-		for(i = 0;i < nombre_stations;i++)
-		{
-			s_tab[i] = init_station(i*(taille_anneau/nombre_stations));
-		}
+		s_tab[i] = init_station(i*(taille_anneau/nombre_stations));
+	}
 		
+	for(int iteration = 500; iteration > 0; iteration--)
+	{
 		//tic d'horloge
+		T++;
 		for(i = 0; i < nombre_stations && s_tab[i].next_packet > 0 ;i++)
 		{
 			s_tab[i].next_packet--;
@@ -69,15 +86,17 @@ void simulateur(FILE* f1)
 		//sans mémoire donc normalement, on se fiche de quand on génère l'arrivee, ça ne changera rien aux intervalles
 		for(i = 0; i < nombre_stations && s_tab[i].next_packet == 0 ;i++)
 		{
-			arrivee_paquet(s_tab[i]);
+			arrivee_paquet(&s_tab[i]);
 			s_tab[i].next_packet = expo();
 		}
+		
 		
 		//on tente d'inserer tous les packets de stations ayant une file
 		for(i = 0; i < nombre_stations && s_tab[i].file > 0 ;i++)
 		{
-			insertion_paquet(s_tab[i]);
+			insertion_paquet(&s_tab[i]);
 		}
+		
 		
 		//on décale tous les objets d'une case
 		anneau_tourne();
@@ -87,6 +106,7 @@ void simulateur(FILE* f1)
 		{
 			suppression_paquet(s_tab[i]);
 		}
+		anneau_affiche();
 	}
 }
 

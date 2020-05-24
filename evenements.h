@@ -1,6 +1,11 @@
 #ifndef SIMULATEUR_H
 #define SIMULATEUR_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
+
 //struct
 typedef struct station
 {
@@ -32,8 +37,8 @@ int epsilon;						//hauteur manchon pour cond arrêt
 
 //fonctions
 
-void insertion_paquet(station s);
-void arrivee_paquet(station s);
+void insertion_paquet(station *s);
+void arrivee_paquet(station *s);
 void suppression_paquet(station s);
 
 #endif

@@ -15,6 +15,6 @@ int expo()
 		r = (double)random()/RAND_MAX;
 	}
 	proba = -(log(r))/(l*1.0);
-	return 35;
+	return 5;
 	//todo : utiliser proba dans le tableau "tableau_proba" déclaré en global pour return la bonne valeur avant prochain packet
 }

@@ -1,18 +1,43 @@
 //evenements de la simulation
 
-void arrivee_paquet()
+#include "evenements.h"
+#include "expo.h"
+
+//arrivee d'un paquet
+void arrivee_paquet(station s)
 {
-	//todo
+	nombre_paquets++;
+	s.file++;
 }
 
-void insertion_paquet()
+//insertion d'un paquet si possible, augmente le temps d'attente sinon, n'augmente PAS si le temps d'attente est du à delta ! 
+//temps d'attente par station car on s'intéresse aux 1 et 10, si on veut total on sommera tout.
+void insertion_paquet(station s)
 {
-	//todo
+	if(anneau[s.id] == -1)
+	{
+		if(s.delta == 0)
+		{
+			s.file--;
+			paquet_actif++;
+			s.delta = 10;
+			anneau[s.id] = s.id;
+		}
+		else if(s.delta > 0)
+		{
+			s.delta--;
+		}
+	}
+	else
+	{
+		s.temps_attente++;
+	}
 }
 
-void suppression_paquet()
+void suppression_paquet(station s)
 {
-	//todo
+	paquet_actif--;
+	anneau[s.id] = -1;
 }
 
 

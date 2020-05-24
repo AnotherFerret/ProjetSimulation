@@ -1,9 +1,11 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include "expo.h"
+
 //fonction exponentielle, générateurs de données aléatoires à placer ici
 
-double expo(int l)
+int expo()
 {
 	double r = (double)random()/RAND_MAX;
 	double proba = 0.0;
@@ -13,6 +15,6 @@ double expo(int l)
 		r = (double)random()/RAND_MAX;
 	}
 	proba = -(log(r))/(l*1.0);
-	return 1.0;
+	return 35;
 	//todo : utiliser proba dans le tableau "tableau_proba" déclaré en global pour return la bonne valeur avant prochain packet
 }

@@ -24,8 +24,14 @@ Tapez 'q()' pour quitter R.
 > temps_simulation = V1
 > temps_attente = V2
 > 
-> plot(temps_simulation,temps_attente,type="l",xlab="temps_simulation en tic",ylab="temps_attente moyen en tic",col="red")
+> pdf("output1.pdf", width = 16, height=16)
+> 
+> plot(temps_simulation,temps_attente,type="l",xlab="temps_simulation en tic",ylab="% du temps d'attente",col="red")
+> 
+> dev.off()
+null device 
+          1 
 > 
 > proc.time()
 utilisateur     système      écoulé 
-      9.334       0.096       9.508 
+      0.483       0.030       0.512 

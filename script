@@ -1,0 +1,5 @@
+make
+./simulateur
+R CMD BATCH Draw.R 
+sleep 1s
+R CMD BATCH Draw2.R 

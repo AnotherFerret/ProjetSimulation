@@ -5,4 +5,8 @@ attach(data)
 temps_simulation = V1
 temps_attente = V2
 
-plot(temps_simulation,temps_attente,type="l",xlab="temps_simulation en tic",ylab="temps_attente moyen en tic",col="red")
+pdf("output1.pdf", width = 16, height=16)
+
+plot(temps_simulation,temps_attente,type="l",xlab="temps_simulation en tic",ylab="% du temps d'attente",col="red")
+
+dev.off()

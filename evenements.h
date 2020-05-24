@@ -25,7 +25,6 @@ typedef struct station
 #define nombre_stations 24
 
 //variables globales
-int T;								//temps écoulé
 
 int nombre_paquets; 				//paquets envoyés
 int paquet_actif; 					//paquets présents
@@ -35,7 +34,6 @@ int anneau[taille_anneau];			//l'anneau
 int longueur_manchon;				//longueur manchon pour cond arrêt
 double haut_manchon;					
 double bas_manchon;					
-int epsilon;						//hauteur manchon pour cond arrêt
 
 //fonctions
 

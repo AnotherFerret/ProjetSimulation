@@ -60,11 +60,17 @@ int expo()
 	double proba = 0.0;
 	int temps = 0;
 	
-	while(r==0 || r == 1)
+	do
 	{
-		r = (double)random()/RAND_MAX;
+		do
+		{
+			r = (double)random()/RAND_MAX;
+		}
+		while(r==0 || r == 1);
+		
+		proba = (double)(-(log(r))/(l*1.0));
 	}
-	proba =  -(log(r))/(l*1.0);
+	while(proba > 1.0);
 	
 	for(temps = 0; proba > tableau_proba[temps] && temps < 108; temps++)
 	{

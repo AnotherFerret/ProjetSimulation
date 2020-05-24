@@ -1,7 +1,7 @@
 //main et simulateur, init simulation
 
-#define EPSILON 10e-6
-#define MANCHONMAXLENGTH 5000
+#define EPSILON 10e-5
+#define MANCHONMAXLENGTH 300
 
 
 #include "evenements.h"
@@ -50,16 +50,15 @@ void anneau_affiche()
 	{
 		if(i == j * (taille_anneau/nombre_stations) && j < nombre_stations)
 		{
-			//printf("[[%d] station = %d]", anneau[i], i);
+			printf("[[%d] station = %d]", anneau[i], i);
 			j++;
 		}
 		else
 		{
-			//printf("[%d]", anneau[i]);
+			printf("[%d]", anneau[i]);
 		}
 		
 	}
-	//printf("\nT = %d\n\n", T);
 }
 
 int condition_arret(double temps_attente_moyen)
@@ -103,7 +102,6 @@ void simulateur(FILE* f1,FILE* f2)
 	for(int iteration = 20000000; iteration > 0; iteration--)
 	{
 		//tic d'horloge
-		T++;
 		for(i = 0; i < nombre_stations ;i++)
 		{
 			if(s_tab[i].next_packet > 0)
@@ -119,7 +117,6 @@ void simulateur(FILE* f1,FILE* f2)
 			if(s_tab[i].next_packet <= 0)
 			{
 				arrivee_paquet(&s_tab[i]);
-				s_tab[i].next_packet = expo();
 			}
 			//printf("s_tab[%d] next_packet value is : %d\n", i, s_tab[i].next_packet);
 		}
@@ -130,7 +127,9 @@ void simulateur(FILE* f1,FILE* f2)
 			if(s_tab[i].file > 0)
 			{
 				insertion_paquet(&s_tab[i]);
+				
 			}
+			s_tab[i].delta--;
 			//printf("i = %d, s_tab[i] file = %d\n", i, s_tab[i].file);
 			
 		}
@@ -146,15 +145,15 @@ void simulateur(FILE* f1,FILE* f2)
 				suppression_paquet(s_tab[i]);
 			}
 		}
-		anneau_affiche();
+		//anneau_affiche();
 		//printf("UN TIC \n\n");
 		//Temps d'attente moyen pour les stations 1 et 10
 		temps_simulation ++;
-		//fprintf(f1,"%d	%lf\n",temps_simulation,(double)(s_tab[1].temps_attente + s_tab[10].temps_attente )/temps_simulation);
-		//fprintf(f2,"%d	%d\n",temps_simulation,paquet_actif);
+		fprintf(f1,"%d	%lf\n",temps_simulation,(double)(s_tab[1].temps_attente)/temps_simulation);
+		fprintf(f2,"%d	%d\n",temps_simulation,paquet_actif);
 		
 		
-		if (condition_arret((double)(s_tab[1].temps_attente + s_tab[10].temps_attente )/temps_simulation))
+		if (condition_arret((double)(s_tab[1].temps_attente)/temps_simulation))
 		{
 			printf("Arret à l'itération : %d \n",temps_simulation);
 			iteration = 0;

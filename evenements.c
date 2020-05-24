@@ -8,6 +8,7 @@ void arrivee_paquet(station *s)
 {
 	nombre_paquets++;
 	s->file++;
+	s->next_packet = expo();
 }
 
 //insertion d'un paquet si possible, augmente le temps d'attente sinon, n'augmente PAS si le temps d'attente est du à delta ! 
@@ -16,17 +17,13 @@ void insertion_paquet(station* s)
 {
 	if(anneau[s->id] == -1)
 	{
-		if(s->delta == 0)
+		if(s->delta <= 0)
 		{
 			s->file--;
 			paquet_actif++;
 			s->delta = 10;
 			anneau[s->id] = s->id;
 			
-		}
-		else if(s->delta > 0)
-		{
-			s->delta--;
 		}
 		
 	}

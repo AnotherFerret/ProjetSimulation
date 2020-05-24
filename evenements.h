@@ -29,7 +29,7 @@ int T;								//temps écoulé
 
 int nombre_paquets; 				//paquets envoyés
 int paquet_actif; 					//paquets présents
-int tableau_proba[200];				//contient la f° de répartition
+double tableau_proba[109];			//f° repartition
 int anneau[taille_anneau];			//l'anneau
 
 int longueur_manchon;				//longueur manchon pour cond arrêt

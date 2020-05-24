@@ -1,6 +1,5 @@
 //main et simulateur, init simulation
 
-
 #include "evenements.h"
 #include "expo.h"
 
@@ -59,12 +58,15 @@ void anneau_affiche()
 	printf("\nT = %d\n\n", T);
 }
 
+
+
 void simulateur(FILE* f1)
 {
 	station s_tab[nombre_stations];
 	int i = 0;
 	
 	init_anneau();
+	init_tableau_proba();
 	
 
 	//initialise les stations à intervalles réguliers
@@ -73,7 +75,7 @@ void simulateur(FILE* f1)
 		s_tab[i] = init_station(i*(taille_anneau/nombre_stations));
 	}
 		
-	for(int iteration = 500; iteration > 0; iteration--)
+	for(int iteration = 2000; iteration > 0; iteration--)
 	{
 		//tic d'horloge
 		T++;
@@ -88,6 +90,7 @@ void simulateur(FILE* f1)
 		{
 			arrivee_paquet(&s_tab[i]);
 			s_tab[i].next_packet = expo();
+			//printf("s_tab[%d] next_packet value is : %d\n", i, s_tab[i].next_packet);
 		}
 		
 		
@@ -116,15 +119,6 @@ int condition_arret(long double old, long double new)
 	//todo
 	return 0;
 }
-
-
-
-//lit f et range les valeurs lue dans le tableau_proba
-void fonction_repartition_lecture(FILE* f)
-{
-	//todo
-}
-
 
 
 int main(int argc, char **argv)

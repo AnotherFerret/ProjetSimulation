@@ -21,8 +21,8 @@ typedef struct station
 }station;
 
 
-#define taille_anneau 150
-#define nombre_stations 15
+#define taille_anneau 149
+#define nombre_stations 24
 
 //variables globales
 int T;								//temps écoulé

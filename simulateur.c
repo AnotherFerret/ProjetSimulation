@@ -44,7 +44,7 @@ void anneau_affiche()
 	int j = 0;
 	for(int i = 0; i < taille_anneau; i++)
 	{
-		if(i == j * (taille_anneau/nombre_stations))
+		if(i == j * (taille_anneau/nombre_stations) && j < nombre_stations)
 		{
 			printf("[[%d] station = %d]", anneau[i], i);
 			j++;
@@ -73,43 +73,57 @@ void simulateur(FILE* f1)
 	for(i = 0;i < nombre_stations;i++)
 	{
 		s_tab[i] = init_station(i*(taille_anneau/nombre_stations));
+		printf("%d devenu station\n", i);
 	}
 		
-	for(int iteration = 2000; iteration > 0; iteration--)
+	for(int iteration = 10000; iteration > 0; iteration--)
 	{
 		//tic d'horloge
 		T++;
-		for(i = 0; i < nombre_stations && s_tab[i].next_packet > 0 ;i++)
+		for(i = 0; i < nombre_stations ;i++)
 		{
-			s_tab[i].next_packet--;
+			if(s_tab[i].next_packet > 0)
+			{
+				s_tab[i].next_packet--;
+			}
 		}
 		
 		//on fait arriver tous les packets qui doivent arriver, puis genere la prochaine arrivee
 		//sans mémoire donc normalement, on se fiche de quand on génère l'arrivee, ça ne changera rien aux intervalles
-		for(i = 0; i < nombre_stations && s_tab[i].next_packet == 0 ;i++)
+		for(i = 0; i < nombre_stations;i++)
 		{
-			arrivee_paquet(&s_tab[i]);
-			s_tab[i].next_packet = expo();
+			if(s_tab[i].next_packet <= 0)
+			{
+				arrivee_paquet(&s_tab[i]);
+				s_tab[i].next_packet = expo();
+			}
 			//printf("s_tab[%d] next_packet value is : %d\n", i, s_tab[i].next_packet);
 		}
 		
-		
 		//on tente d'inserer tous les packets de stations ayant une file
-		for(i = 0; i < nombre_stations && s_tab[i].file > 0 ;i++)
+		for(i = 0; i < nombre_stations;i++)
 		{
-			insertion_paquet(&s_tab[i]);
+			if(s_tab[i].file > 0)
+			{
+				insertion_paquet(&s_tab[i]);
+			}
+			//printf("i = %d, s_tab[i] file = %d\n", i, s_tab[i].file);
+			
 		}
-		
 		
 		//on décale tous les objets d'une case
 		anneau_tourne();
 		
 		//on supprime tous les packets qui se retrouvent face à leur envoyeur
-		for(i = 0; i < nombre_stations && s_tab[i].id == anneau[s_tab[i].id] ;i++)
+		for(i = 0; i < nombre_stations;i++)
 		{
-			suppression_paquet(s_tab[i]);
+			if(s_tab[i].id == anneau[s_tab[i].id])
+			{
+				suppression_paquet(s_tab[i]);
+			}
 		}
 		anneau_affiche();
+		printf("UN TIC \n\n");
 	}
 }
 

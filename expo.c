@@ -6,6 +6,7 @@
 
 //fonction exponentielle, générateurs de données aléatoires à placer ici
 
+//calcule la fonction de réparation de la distribution des inter-arrivées stockées
 void init_tableau_proba()
 {
 	FILE * fp;
@@ -54,6 +55,7 @@ void init_tableau_proba()
         free(line);
 }
 
+//renvoie une durée (entier) en utilisant la fonction de répartition
 int expo()
 {
 	double r = (double)random()/RAND_MAX;

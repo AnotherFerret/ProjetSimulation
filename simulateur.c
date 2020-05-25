@@ -16,7 +16,7 @@ void init_anneau()
 	}
 }
 
-
+//initialise une station
 station init_station(int id)
 {
 	station s;
@@ -33,6 +33,7 @@ station init_station(int id)
 	return s;
 }
 
+//décale l'anneau d'un slot
 void anneau_tourne()
 {
 	int memo = anneau[0];
@@ -43,6 +44,7 @@ void anneau_tourne()
 	anneau[taille_anneau-1] = memo;
 }
 
+//affiche l'anneau ( pour tests )
 void anneau_affiche(int nbr_stations)
 {
 	int j = 0;
@@ -61,6 +63,7 @@ void anneau_affiche(int nbr_stations)
 	}
 }
 
+//vérifie la condition d'arrêt
 int condition_arret(double temps_attente_moyen)
 {
 	if (temps_attente_moyen < bas_manchon || temps_attente_moyen > haut_manchon)

@@ -84,7 +84,7 @@ int condition_arret(double temps_attente_moyen)
 }
 
 
-void simulateur(FILE* f1,FILE* f2, int nbr_station, int main_station)
+void simulateur(FILE* f1,FILE* f2,FILE* f3, int nbr_station, int main_station)
 {
 	station s_tab[nbr_station];
 	int i = 0;
@@ -148,7 +148,8 @@ void simulateur(FILE* f1,FILE* f2, int nbr_station, int main_station)
 
 		temps_simulation ++;
 		fprintf(f1,"%d	%lf\n",temps_simulation,(double)(s_tab[main_station].temps_attente)/temps_simulation);
-		fprintf(f2,"%d	%d\n",temps_simulation,paquet_actif);
+		//fprintf(f2,"%d	%d\n",temps_simulation,paquet_actif);
+		fprintf(f3,"%d	%lf\n",temps_simulation,(double)(s_tab[main_station].temps_attente)/(s_tab[main_station].nombre_paquets));
 		
 		
 		if (condition_arret((double)(s_tab[main_station].temps_attente)/temps_simulation))
@@ -169,8 +170,9 @@ int main(int argc, char **argv)
 
 	FILE* f1 = fopen("simulation_temps_attente.data", "w");
 	FILE* f2 = fopen("simulation_paquets_actifs.data", "w");
+	FILE* f3 = fopen("simulation_temps_attente_moyen_par_paquet.data", "w");
 	srandom(getpid() + time(NULL));
-	simulateur(f1,f2, atoi(argv[1]), atoi(argv[2]));
+	simulateur(f1,f2,f3, atoi(argv[1]), atoi(argv[2]));
 	fclose(f1);
 	fclose(f2);
 

@@ -23,7 +23,7 @@ void insertion_paquet(station* s)
 			paquet_actif++;
 			s->delta = 10;
 			anneau[s->id] = s->id;
-			
+			s->nombre_paquets++;
 		}
 		
 	}

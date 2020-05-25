@@ -14,7 +14,7 @@ typedef struct station
 	int temps_attente;		//temps perdu
 	int delta;				//délaire avant de renvoyer un packet
 	int next_packet;
-	
+	int nombre_paquets;		//Nombre de paquets envoyé
 	int haut;
 	int bas;
 	int manchon_iteration;

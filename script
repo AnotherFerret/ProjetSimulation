@@ -1,5 +1,30 @@
 make
-./simulateur
-R CMD BATCH Draw.R 
+./simulateur 20 1
+Rscript R_scripts/Draw.R output/attente_station1_K20.pdf
 sleep 1s
-R CMD BATCH Draw2.R 
+Rscript R_scripts/Draw2.R output/packet_station1_K20.pdf
+
+./simulateur 22 1
+Rscript R_scripts/Draw.R output/attente_station1_K22.pdf
+sleep 1s
+Rscript R_scripts/Draw2.R output/packet_station1_K22.pdf
+
+./simulateur 24 1
+Rscript R_scripts/Draw.R output/attente_station1_K24.pdf
+sleep 1s
+Rscript R_scripts/Draw2.R output/packet_station1_K24.pdf
+
+./simulateur 20 10
+Rscript R_scripts/Draw.R output/attente_station10_K20.pdf
+sleep 1s
+Rscript R_scripts/Draw2.R output/packet_station10_K20.pdf
+
+./simulateur 22 10
+Rscript R_scripts/Draw.R output/attente_station10_K22.pdf
+sleep 1s
+Rscript R_scripts/Draw2.R output/packet_station10_K22.pdf
+
+./simulateur 24 10
+Rscript R_scripts/Draw.R output/attente_station10_K24.pdf
+sleep 1s
+Rscript R_scripts/Draw2.R output/packet_station10_K24.pdf

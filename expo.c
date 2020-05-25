@@ -60,7 +60,7 @@ int expo()
 	double proba = 0.0;
 	int temps = 0;
 	
-	do
+	/*do
 	{
 		do
 		{
@@ -76,6 +76,21 @@ int expo()
 	{
 		;
 	}
+	return temps;*/
+	
+		do
+		{
+			r = (double)random()/RAND_MAX;
+		}
+		while(r==0 || r == 1);
+	
+	for(temps = 0; r > tableau_proba[temps] && temps < 108; temps++)
+	{
+		;
+	}
 	return temps;
+	
+	
+	
 	//todo : utiliser proba dans le tableau "tableau_proba" déclaré en global pour return la bonne valeur avant prochain packet
 }

@@ -22,7 +22,6 @@ typedef struct station
 
 
 #define taille_anneau 149
-#define nombre_stations 24
 
 //variables globales
 

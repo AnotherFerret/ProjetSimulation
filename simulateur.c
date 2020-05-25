@@ -1,7 +1,7 @@
 //main et simulateur, init simulation
 
 #define EPSILON 10e-5
-#define MANCHONMAXLENGTH 300
+#define MANCHONMAXLENGTH 1000
 
 
 #include "evenements.h"
@@ -43,12 +43,12 @@ void anneau_tourne()
 	anneau[taille_anneau-1] = memo;
 }
 
-void anneau_affiche()
+void anneau_affiche(int nbr_stations)
 {
 	int j = 0;
 	for(int i = 0; i < taille_anneau; i++)
 	{
-		if(i == j * (taille_anneau/nombre_stations) && j < nombre_stations)
+		if(i == j * (taille_anneau/nbr_stations) && j < nbr_stations)
 		{
 			printf("[[%d] station = %d]", anneau[i], i);
 			j++;
@@ -65,7 +65,6 @@ int condition_arret(double temps_attente_moyen)
 {
 	if (temps_attente_moyen < bas_manchon || temps_attente_moyen > haut_manchon)
 	{
-		printf("%d \n",longueur_manchon);
 		bas_manchon = temps_attente_moyen - EPSILON/2.0;
 		haut_manchon = temps_attente_moyen + EPSILON/2.0;
 		longueur_manchon = 0;
@@ -82,9 +81,9 @@ int condition_arret(double temps_attente_moyen)
 }
 
 
-void simulateur(FILE* f1,FILE* f2)
+void simulateur(FILE* f1,FILE* f2, int nbr_station, int main_station)
 {
-	station s_tab[nombre_stations];
+	station s_tab[nbr_station];
 	int i = 0;
 	int temps_simulation = 0;
 	
@@ -93,16 +92,15 @@ void simulateur(FILE* f1,FILE* f2)
 	
 
 	//initialise les stations à intervalles réguliers
-	for(i = 0;i < nombre_stations;i++)
+	for(i = 0;i < nbr_station;i++)
 	{
-		s_tab[i] = init_station(i*(taille_anneau/nombre_stations));
-		//printf("%d devenu station\n", i);
+		s_tab[i] = init_station(i*(taille_anneau/nbr_station));
 	}
 		
-	for(int iteration = 20000000; iteration > 0; iteration--)
+	for(int iteration = 2000000; iteration > 0; iteration--)
 	{
 		//tic d'horloge
-		for(i = 0; i < nombre_stations ;i++)
+		for(i = 0; i < nbr_station ;i++)
 		{
 			if(s_tab[i].next_packet > 0)
 			{
@@ -112,17 +110,16 @@ void simulateur(FILE* f1,FILE* f2)
 		
 		//on fait arriver tous les packets qui doivent arriver, puis genere la prochaine arrivee
 		//sans mémoire donc normalement, on se fiche de quand on génère l'arrivee, ça ne changera rien aux intervalles
-		for(i = 0; i < nombre_stations;i++)
+		for(i = 0; i < nbr_station;i++)
 		{
 			if(s_tab[i].next_packet <= 0)
 			{
 				arrivee_paquet(&s_tab[i]);
 			}
-			//printf("s_tab[%d] next_packet value is : %d\n", i, s_tab[i].next_packet);
 		}
 		
 		//on tente d'inserer tous les packets de stations ayant une file
-		for(i = 0; i < nombre_stations;i++)
+		for(i = 0; i < nbr_station;i++)
 		{
 			if(s_tab[i].file > 0)
 			{
@@ -130,7 +127,6 @@ void simulateur(FILE* f1,FILE* f2)
 				
 			}
 			s_tab[i].delta--;
-			//printf("i = %d, s_tab[i] file = %d\n", i, s_tab[i].file);
 			
 		}
 		
@@ -138,22 +134,21 @@ void simulateur(FILE* f1,FILE* f2)
 		anneau_tourne();
 		
 		//on supprime tous les packets qui se retrouvent face à leur envoyeur
-		for(i = 0; i < nombre_stations;i++)
+		for(i = 0; i < nbr_station;i++)
 		{
 			if(s_tab[i].id == anneau[s_tab[i].id])
 			{
 				suppression_paquet(s_tab[i]);
 			}
 		}
-		//anneau_affiche();
-		//printf("UN TIC \n\n");
-		//Temps d'attente moyen pour les stations 1 et 10
+		//anneau_affiche(nbr_stations);
+
 		temps_simulation ++;
-		fprintf(f1,"%d	%lf\n",temps_simulation,(double)(s_tab[1].temps_attente)/temps_simulation);
+		fprintf(f1,"%d	%lf\n",temps_simulation,(double)(s_tab[main_station].temps_attente)/temps_simulation);
 		fprintf(f2,"%d	%d\n",temps_simulation,paquet_actif);
 		
 		
-		if (condition_arret((double)(s_tab[1].temps_attente)/temps_simulation))
+		if (condition_arret((double)(s_tab[main_station].temps_attente)/temps_simulation))
 		{
 			printf("Arret à l'itération : %d \n",temps_simulation);
 			iteration = 0;
@@ -172,7 +167,7 @@ int main(int argc, char **argv)
 	FILE* f1 = fopen("simulation_temps_attente.data", "w");
 	FILE* f2 = fopen("simulation_paquets_actifs.data", "w");
 	srandom(getpid() + time(NULL));
-	simulateur(f1,f2);
+	simulateur(f1,f2, atoi(argv[1]), atoi(argv[2]));
 	fclose(f1);
 	fclose(f2);
 

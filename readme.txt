@@ -11,5 +11,7 @@ Executer le programme :
 ./simulateur "nombre de stations" "station à observer"
 
 Générer une courbe : 
-Rscript R_scripts/Draw.R "nom_sortie.pdf"			//courbe indiquant le temps d'attente au fil du temps
-Rscript R_scripts/Draw2.R "nom_sortie.pdf"		//courbe indiquant le nombre de slots remplit au fil du temps
+Rscript R_scripts/Draw.R "nom_sortie.pdf"			//courbe indiquant le temps d'attente en % du temps de simulation
+Rscript R_scripts/Draw3.R "nom_sortie.pdf"			//courbe indiquant le temps d'attente en tic
+Rscript R_scripts/Draw2.R "nom_sortie.pdf"			//courbe indiquant le nombre de slots remplit au fil du temps
+		

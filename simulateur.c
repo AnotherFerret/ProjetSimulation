@@ -148,7 +148,7 @@ void simulateur(FILE* f1,FILE* f2,FILE* f3, int nbr_station, int main_station)
 
 		temps_simulation ++;
 		fprintf(f1,"%d	%lf\n",temps_simulation,(double)(s_tab[main_station].temps_attente)/temps_simulation);
-		//fprintf(f2,"%d	%d\n",temps_simulation,paquet_actif);
+		fprintf(f2,"%d	%d\n",temps_simulation,paquet_actif);
 		fprintf(f3,"%d	%lf\n",temps_simulation,(double)(s_tab[main_station].temps_attente)/(s_tab[main_station].nombre_paquets));
 		
 		

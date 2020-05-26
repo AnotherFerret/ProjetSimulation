@@ -1,30 +1,45 @@
 make
+mkdir output
 ./simulateur 20 1
 Rscript R_scripts/Draw.R output/attente_station1_K20.pdf
 sleep 1s
 Rscript R_scripts/Draw2.R output/packet_station1_K20.pdf
+sleep 1s
+Rscript R_scripts/Draw3.R output/temps_attente_station1_K20.pdf
 
 ./simulateur 22 1
 Rscript R_scripts/Draw.R output/attente_station1_K22.pdf
 sleep 1s
 Rscript R_scripts/Draw2.R output/packet_station1_K22.pdf
+sleep 1s
+Rscript R_scripts/Draw3.R output/temps_attente_station1_K22.pdf
 
 ./simulateur 24 1
 Rscript R_scripts/Draw.R output/attente_station1_K24.pdf
 sleep 1s
 Rscript R_scripts/Draw2.R output/packet_station1_K24.pdf
+sleep 1s
+Rscript R_scripts/Draw3.R output/temps_attente_station1_K24.pdf
 
 ./simulateur 20 10
 Rscript R_scripts/Draw.R output/attente_station10_K20.pdf
 sleep 1s
 Rscript R_scripts/Draw2.R output/packet_station10_K20.pdf
+sleep 1s
+Rscript R_scripts/Draw3.R output/temps_attente_station10_K20.pdf
 
 ./simulateur 22 10
 Rscript R_scripts/Draw.R output/attente_station10_K22.pdf
 sleep 1s
 Rscript R_scripts/Draw2.R output/packet_station10_K22.pdf
+sleep 1s
+Rscript R_scripts/Draw3.R output/temps_attente_station10_K22.pdf
+
 
 ./simulateur 24 10
 Rscript R_scripts/Draw.R output/attente_station10_K24.pdf
 sleep 1s
 Rscript R_scripts/Draw2.R output/packet_station10_K24.pdf
+sleep 1s
+Rscript R_scripts/Draw3.R output/temps_attente_station10_K24.pdf
+

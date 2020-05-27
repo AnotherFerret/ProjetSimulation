@@ -175,6 +175,7 @@ int main(int argc, char **argv)
 	simulateur(f1,f2,f3, atoi(argv[1]), atoi(argv[2]));
 	fclose(f1);
 	fclose(f2);
+	fclose(f3);
 
 	return 0;
 }
